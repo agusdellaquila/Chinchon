@@ -15,9 +15,9 @@ public class Mesa {
         mesa.add(carta);
     }
 
-    public void getUltimaCartaMesa() {
+    public Carta getUltimaCartaMesa() {
         Carta ultimaCarta = mesa.get(mesa.size() - 1);
-        ultimaCarta.mostrarCarta(ultimaCarta);
+        return ultimaCarta;
     }
 
     //poner una carta random en la mesa

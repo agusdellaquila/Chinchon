@@ -41,36 +41,7 @@ public class Carta {
     public void setCombinacion(Combinacion combinacion) {
         this.combinacion = combinacion;
     }
-
-    public String mostrarCartaString(Carta carta) {
-        String cartaString = "";
-        cartaString = "[" + this.numero + " " + this.palo + " " + combinacionToString(this.combinacion) + "\u001B[0m" + "]";
-        return cartaString;
-    }
-
-    public void mostrarCarta(Carta carta) {
-        System.out.println("[" + this.numero + " " + this.palo + " " + combinacionToString(this.combinacion) + "\u001B[0m" + "]");
-        System.out.print("\u001B[0m");
-        // System.out.println("┌───────┐");
-        // System.out.println("│       │");
-        // if (numero > 9) {
-        //     System.out.println("│ " + numero + "    │");
-        // } else {
-        //     System.out.println("│ " + numero + "     │");
-        // }
-        // if (palo == Carta.Palo.ORO) {
-        //     System.out.println("│ ORO   │");
-        // } else if (palo == Carta.Palo.COPA) {
-        //     System.out.println("│ COPA  │");
-        // } else if (palo == Carta.Palo.ESPADA) {
-        //     System.out.println("│ESPADA │");
-        // } else if (palo == Carta.Palo.BASTO) {
-        //     System.out.println("│ BASTO │");
-        // }
-        // System.out.println("│       │");
-        // System.out.println("└───────┘");
-    }
-
+    
     //return Palo from string
     // public static Palo getPaloFromString(String palo) {
     //     switch (palo) {

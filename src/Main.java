@@ -1,6 +1,10 @@
 public class Main {
     public static void main(String[] args) {
-        Presentador presentador = new Presentador();
-        presentador.cicloDeJuego();
+        Vista vista = new Vista();
+        Juego juego = new Juego();
+        Controlador controlador = new Controlador(vista, juego);
+
+        controlador.cicloDeJuego();
+        // presentador.cicloDeJuego();
     }
 }

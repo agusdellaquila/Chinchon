@@ -18,19 +18,6 @@ public class Mano {
         this.mano = mano;
     }
 
-    public void mostrarMano(Jugador jugadorActual) {
-        System.out.println("\u001B[33m" + "----------------Mano de " + jugadorActual.getNombre() + "----------------" + "\u001B[0m");
-        String manoString = "";
-        for (Carta carta : mano) {
-            manoString += carta.mostrarCartaString(carta);
-        }
-        System.out.println(manoString);
-        // for (Carta carta : mano) {
-        //     carta.mostrarCarta(carta);
-        // }
-        System.out.println("\u001B[33m" + "-------------------------------------------" + "\u001B[0m");
-    }
-
     //jugarCarta
     public void jugarCarta(Carta cartaPorJugar) {
         cartaPorJugar.setCombinacion(Carta.Combinacion.NO_COMBINADA);
@@ -200,42 +187,5 @@ public class Mano {
     //         cartas.remove(indice);
     //     }
     //     cartas = cartasOrdenadas;
-    // }
-
-    // public void mostrar() {
-    //     for (Carta carta : cartas) {
-    //         System.out.println(carta);
-    //     }
-    // }
-
-    // public void mostrarCombinaciones() {
-    //     for (Carta carta : combinaciones) {
-    //         System.out.println(carta);
-    //     }
-    // }
-
-    // public void mostrarCombinacionesOrdenadas() {
-    //     ordenarPorNumeroYPalo();
-    //     mostrarCombinaciones();
-    // }
-
-    // public void mostrarCombinacionesOrdenadasPorPalo() {
-    //     ordenarPorPaloYNumero();
-    //     mostrarCombinaciones();
-    // }
-
-    // public void mostrarCombinacionesOrdenadasPorNumero() {
-    //     ordenarPorNumeroYPalo();
-    //     mostrarCombinaciones();
-    // }
-
-    // public void mostrarCombinacionesOrdenadasPorPaloYNumero() {
-    //     ordenarPorPaloYNumero();
-    //     mostrarCombinaciones();
-    // }
-
-    // public void mostrarCombinacionesOrdenadasPorNumeroYPalo() {
-    //     ordenarPorNumeroYPalo();
-    //     mostrarCombinaciones();
     // }
 }
