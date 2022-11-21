@@ -36,8 +36,8 @@ public class Controlador {
         Mazo mazo = juego.getMazo();
         int cantidadJugadores = 2;
 
-        vista.mostrarMensajeCantidadJugadores(cantidadJugadores);
-        juego.iniciarJugadores();
+        ArrayList<String> nombresDeJugadores = vista.mostrarMensajeCantidadJugadores(cantidadJugadores);
+        juego.iniciarJugadores(nombresDeJugadores);
         juego.iniciarMazo();
         vista.mostrarJugadores(jugadores);
         juego.iniciarMesa();

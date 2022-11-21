@@ -49,14 +49,14 @@ public class Juego {
         return noTurnoJugador;
     }
 
-    public void iniciarJugadores(ArrayList<jugadores> jugadores, ArrayList<String> nombresDeJugadores) {
-        //recibe array de string con nombres y los inicia
-        Boolean inicia = false;
-        String nombre = sc.next();
-        if (i == 1) {
-            inicia = true;
+    public void iniciarJugadores(ArrayList<String> nombresDeJugadores) {
+        for (String nombre : nombresDeJugadores) {
+            if (jugadores.isEmpty()) {
+                jugadores.add(new Jugador(nombre, true));
+            } else {
+                jugadores.add(new Jugador(nombre, false));
+            }
         }
-        jugadores.add(new Jugador(nombre, inicia));
     }
 
     public void iniciarMazo() {

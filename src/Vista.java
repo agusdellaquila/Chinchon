@@ -70,8 +70,8 @@ public class Vista {
     public void mostrarMano(Jugador jugadorActual, Mano mano) {
         System.out.println("\u001B[33m" + "----------------Mano de " + jugadorActual.getNombre() + "----------------" + "\u001B[0m");
         String manoString = "";
-        for (Carta carta : mano) {
-            manoString += carta.mostrarCartaString(carta);
+        for (Carta carta : mano.getMano()) {
+            manoString += mostrarCartaString(carta);
         }
         System.out.println(manoString);
         System.out.println("\u001B[33m" + "-------------------------------------------" + "\u001B[0m");
@@ -151,7 +151,7 @@ public class Vista {
     }
 
     public ArrayList<String> mostrarMensajeCantidadJugadores(int cantidadJugadores) {
-        ArrayList<String> nombresDeJugadores = new ArrayList();
+        ArrayList<String> nombresDeJugadores = new ArrayList<String>();
 
         sc = new Scanner(System.in);
         System.out.println("El juego sera de " + cantidadJugadores + " Jugadores.");
