@@ -31,4 +31,12 @@ public class Mesa {
     public void quitarCartaDeLaMesa() {
         mesa.remove(mesa.size() - 1);
     }
+
+    //vaciar mesa
+    public void vaciarMesa(Mazo mazo) {
+        for (Carta carta : mesa) {
+            mazo.agregarCarta(carta);
+        }
+        mesa.clear();
+    }
 }

@@ -5,6 +5,5 @@ public class Main {
         Controlador controlador = new Controlador(vista, juego);
 
         controlador.cicloDeJuego();
-        // presentador.cicloDeJuego();
     }
 }

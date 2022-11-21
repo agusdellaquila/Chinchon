@@ -5,12 +5,21 @@ public class Juego {
     private Mazo mazo;
     private ArrayList<Jugador> jugadores; //2 a 4 jugadores
     private Mesa mesa;
+    private int cantidadJugadores;
+    private int puntajeMaximo;
+    // private int cantidadCartasPorJugador;
+    // private int cantidadCartasPorMesa;
+    // private int cantidadCartasPorMazo;
+    // private int cantidadCartasPorRonda;
+    // private int cantidadCartasPorMano;
     static Scanner sc;
 
     public Juego() {
         this.mazo = new Mazo();
         this.jugadores = new ArrayList<>();
         this.mesa = new Mesa();
+        this.cantidadJugadores = 2;
+        this.puntajeMaximo = 100;
     }
 
     public ArrayList<Jugador> getJugadores() {
@@ -27,6 +36,14 @@ public class Juego {
 
     public Mesa getMesa() {
         return mesa;
+    }
+
+    public int getCantidadJugadores() {
+        return cantidadJugadores;
+    }
+
+    public int getPuntajeMaximo() {
+        return puntajeMaximo;
     }
 
     public Jugador revisarTurno(ArrayList<Jugador> jugadores) {
@@ -61,6 +78,9 @@ public class Juego {
 
     public void iniciarMazo() {
         mazo.generarMazo();
+    }
+
+    public void mezclarYRepartirMazo() {
         mazo.mezclarMazo();
         for (Jugador jugador : jugadores) {
             mazo.repartirMazo(jugador);
@@ -70,16 +90,44 @@ public class Juego {
     public void iniciarMesa() {
         mesa.cartaInicialMesa(mazo);
     }
-}
 
-// while (jugadores.size() > 1) {
-//     for (Jugador jugador : jugadores) {
-//         if (jugador.getEsTurno()) {
-//             jugador.jugarCarta(mesa);
-//             if (jugador.getMano().getManoLength() == 0) {
-//                 jugador.setEsGanador(true);
-//                 jugadores.remove(jugador);
-//             }
-//         }
-//     }
-// }
+    public Boolean revisarGanador(ArrayList<Jugador> jugadores) {
+        for (Jugador jugador : jugadores) {
+            if (jugador.getPuntos() >= this.getPuntajeMaximo()) {
+                jugador.setEsPerdedor(true);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Jugador obtenerGanador() {
+        Jugador ganador = null;
+        for (Jugador jugador : jugadores) {
+            if (jugador.getEsPerdedor() != true) {
+                ganador = jugador;
+            }
+        }
+        return ganador;
+    }
+
+    public Boolean revisarSiCorta(Jugador jugadorActual) {
+        Boolean corta = false;
+        Mano mano = jugadorActual.getMano();
+       
+        ArrayList<Carta> noCombinaciones = mano.getNoCombinaciones();
+
+        //si el tamanio es <= 1 y si su primer elemento es menor que 5
+        if (noCombinaciones.size() <= 1) {
+            if (noCombinaciones.size() == 0) {
+                corta = true;
+            } else {
+                if (noCombinaciones.get(0).getNumero() < 5) {
+                    corta = true;
+                }
+            }
+        }
+
+        return corta;
+    }
+}

@@ -1,6 +1,6 @@
 public class Carta {
-    enum Palo {ORO, COPA, ESPADA, BASTO} //PODRA NO SER PRIVADO?//podra estar definido en otro lado?
-    enum Combinacion {ESCALERA, NUMEROS_IGUALES, NO_COMBINADA} //PODRA NO SER PRIVADO?//podra estar definido en otro lado?
+    enum Palo {ORO, COPA, ESPADA, BASTO}
+    enum Combinacion {CHINCHON, ESCALERA, NUMEROS_IGUALES, NO_COMBINADA}
     private Palo palo;
     private int numero;
     private Combinacion combinacion;
@@ -36,6 +36,10 @@ public class Carta {
             default:
                 return "Error en el tipo de combinacion";
         }
+    }
+
+    public void descombinarCarta() {
+        this.combinacion = Combinacion.NO_COMBINADA;
     }
 
     public void setCombinacion(Combinacion combinacion) {

@@ -29,25 +29,50 @@ public class Controlador {
     }
 
     public void partida() {
-        //atributos?
         Juego juego = new Juego();
-        Mesa mesa = juego.getMesa();
-        ArrayList<Jugador> jugadores = juego.getJugadores();
-        Mazo mazo = juego.getMazo();
-        int cantidadJugadores = 2;
-
-        ArrayList<String> nombresDeJugadores = vista.mostrarMensajeCantidadJugadores(cantidadJugadores);
-        juego.iniciarJugadores(nombresDeJugadores);
         juego.iniciarMazo();
+        Mazo mazo = juego.getMazo();
+        
+        Mesa mesa = juego.getMesa();   
+        
+        ArrayList<String> nombresDeJugadores = vista.mostrarMensajeCantidadJugadores(juego.getCantidadJugadores());
+        juego.iniciarJugadores(nombresDeJugadores);
+        ArrayList<Jugador> jugadores = juego.getJugadores();
         vista.mostrarJugadores(jugadores);
-        juego.iniciarMesa();
 
-        this.ronda(juego, mesa, mazo, jugadores);
+        Boolean partida = false;
+        Boolean ganador = false;  
+        while (!partida) {
+            //descombina todas de la ronda pasada
+            mazo.descombinarTodasLasCartas();
+
+            vista.mostrarMensajeNuevaRonda();
+            this.ronda(juego, mesa, mazo, jugadores);
+            for (Jugador jugador : jugadores) {
+                int puntajeDeRonda = jugador.getMano().obtenerPuntaje();
+                jugador.setPuntos(puntajeDeRonda);
+
+                jugador.getMano().vaciarMano(mazo);
+            }
+
+            ganador = juego.revisarGanador(jugadores);
+            if (ganador) {
+                Jugador jugadorGanador = juego.obtenerGanador();
+                vista.mostrarGanador(jugadorGanador);
+                vista.mostrarPuntajes(jugadores);
+                partida = true;
+            }
+            // vista.mostrarGanador(null);
+            //reestablecer a 0 las manos de los jugadores
+        }
     }
 
     public void ronda(Juego juego, Mesa mesa, Mazo mazo,  ArrayList<Jugador> jugadores) {
+        juego.iniciarMesa();
+        juego.mezclarYRepartirMazo(); //reparte las manos de los jugadores
+        vista.mostrarPuntajes(jugadores);
+        
         Boolean ronda = false;  
-
         while (!ronda) {
                 vista.mostrarMesa(mesa);
 
@@ -65,16 +90,18 @@ public class Controlador {
                 vista.mostrarMano(jugadorActual, mano);
 
                 //opciones de levantado
-                int opcionLevantado = vista.mostrarMenuJuegoOSalgo();
+                int opcionLevantado = 0;
 
-                if (opcionLevantado == 1) {
-                    jugadorActual.agarrarCartaDelMazo(mazo);
-                } else if (opcionLevantado == 2) {
-                    jugadorActual.agarrarCartaDeLaMesa(mesa);
-                } else {
-                    vista.opcionInvalida();
+                while (opcionLevantado != 1 && opcionLevantado != 2) {
+                    opcionLevantado = vista.mostrarOpcionesDeLevantado();
+                    if (opcionLevantado == 1) {
+                        jugadorActual.agarrarCartaDelMazo(mazo);
+                    } else if (opcionLevantado == 2) {
+                        jugadorActual.agarrarCartaDeLaMesa(mesa);
+                    } else {
+                        vista.opcionInvalida();
+                    }
                 }
-                
 
                 //mostrar su mano con carta extra
                 vista.mostrarMensajeManoActualizada(jugadorActual);
@@ -82,54 +109,78 @@ public class Controlador {
 
                 //revisar si tiene combinaciones
                 //mover a while
-                int combinaciones = vista.mostrarMenuCombinaciones(jugadorActual);
+                int bucleCombinaciones = 0;
 
-                if (combinaciones == 1) {
-                    vista.mostrarMensajeCombinacionEscalera();
+                while (bucleCombinaciones != 2) {
+                    bucleCombinaciones = vista.mostrarMenuBucleDeCombinaciones();
 
-                    Carta carta1 = vista.inputCarta(jugadorActual);
-                    Carta carta2 = vista.inputCarta(jugadorActual);
-                    Carta carta3 = vista.inputCarta(jugadorActual);
-
-                    Boolean escalera = mano.esEscalera(carta1, carta2, carta3);
-
-                    if (escalera) {
-                        mano.agregarCombinacioneEscalera(carta1, carta2, carta3);
-                    } else {
-                        vista.mostrarMensajeNoEsEscalera();
+                    if (bucleCombinaciones == 1) {
+                        int combinaciones = vista.mostrarMenuCombinaciones(jugadorActual);
+        
+                        if (combinaciones == 1) {
+                            vista.mostrarMensajeCombinacionEscalera();
+        
+                            ArrayList<Carta> cartasPorCombinar = new ArrayList<Carta>();
+                            int cantidadDeCartasPorCombinar = vista.inputNumeroDeCartas();
+                            
+                            if (cantidadDeCartasPorCombinar >= 3) {
+                                for (int i = 0; i < cantidadDeCartasPorCombinar; i++) {
+                                    cartasPorCombinar.add(vista.inputCarta(jugadorActual));
+                                }
+                                
+                                Boolean escalera = mano.combinacionEscalera(cartasPorCombinar);
+            
+                                if (escalera) {
+                                    mano.setCombinacionesEscalera(cartasPorCombinar);
+                                } else {
+                                    vista.mostrarMensajeNoEsEscalera();
+                                }
+                            } else {
+                                vista.mostrarMensajeNoEsEscalera();
+                            }
+                        } else if (combinaciones == 2) {
+                            vista.mostrarMensajeCombinacionNumerosIguales();
+        
+                            ArrayList<Carta> cartasPorCombinar = new ArrayList<Carta>();
+                            int cantidadDeCartasPorCombinar = vista.inputNumeroDeCartas();
+                            
+                            if (cantidadDeCartasPorCombinar >= 3 && cantidadDeCartasPorCombinar <= 4) {
+                                for (int i = 0; i < cantidadDeCartasPorCombinar; i++) {
+                                    cartasPorCombinar.add(vista.inputCarta(jugadorActual));
+                                }
+                                
+                                Boolean numerosIguales = mano.combinacionNumerosIguales(cartasPorCombinar);
+            
+                                if (numerosIguales) {
+                                    mano.setCombinacionesEscalera(cartasPorCombinar);
+                                } else {
+                                    vista.mostrarMensajeNoEsNumerosIguales();
+                                }
+                            } else {
+                                vista.mostrarMensajeNoEsNumerosIguales();
+                            }
+                        } else if (combinaciones == 3) {
+                            vista.mostrarMensajeIngreseCarta();
+        
+                            Carta carta = vista.inputCarta(jugadorActual);
+                            ArrayList<ArrayList<Carta>> combinacionesEscalera = mano.getCombinacionesEscalera();
+                            mano.cartaExtraEscalera(combinacionesEscalera, carta);
+        
+                        } else if (combinaciones == 4) {
+                            vista.mostrarMensajeIngreseCarta();
+        
+                            Carta carta = vista.inputCarta(jugadorActual);
+                            ArrayList<ArrayList<Carta>> combinacionesNumeros = mano.getCombinacionesNumerosIguales();
+                            mano.cartaExtraNumerosIguales(combinacionesNumeros, carta);
+                        } else {
+                            bucleCombinaciones = 2;
+                        }
                     }
-                } else if (combinaciones == 2) {
-                    vista.mostrarMensajeCombinacionNumerosIguales();
-
-                    Carta carta1 = vista.inputCarta(jugadorActual);
-                    Carta carta2 = vista.inputCarta(jugadorActual);
-                    Carta carta3 = vista.inputCarta(jugadorActual);
-
-                    Boolean numerosIguales = mano.esNumerosIguales(carta1, carta2, carta3);
-
-                    if (numerosIguales) {
-                        mano.agregarCombinacionNumerosIguales(carta1, carta2, carta3);
-                    } else {
-                        vista.mostrarMensajeNoEsNumerosIguales();
-                    }
-                } else if (combinaciones == 3) {
-                    vista.mostrarMensajeIngreseCarta();
-
-                    Carta carta = vista.inputCarta(jugadorActual);
-                    ArrayList<Carta> combinacionesEscalera = mano.getCombinacionesEscalera();
-                    mano.cartaExtraEscalera(combinacionesEscalera, carta);
-
-                } else if (combinaciones == 4) {
-                    vista.mostrarMensajeIngreseCarta();
-
-                    Carta carta = vista.inputCarta(jugadorActual);
-                    ArrayList<Carta> combinacionesNumeros = mano.getCombinacionesNumerosIguales();
-                    mano.cartaExtraEscalera(combinacionesNumeros, carta);
-                } else if (combinaciones == 5) {
-                    //no hacer nada
-                } else {
-                    vista.opcionInvalida();
                 }
+                
+
+                //ordenar mano
+                mano.ordenarPorPaloYNumero(mano);
 
                 //mostrar su mano para que vea cual tirar
                 vista.mostrarMano(jugadorActual, mano);
@@ -142,21 +193,29 @@ public class Controlador {
 
                 //revisar si se descombino
                 mano.revisarSiSeDescombino(mano);
+
+                //ordenar mano
+                mano.ordenarPorPaloYNumero(mano);
                 
                 //mostrar como queda su mano
                 vista.mostrarMano(jugadorActual, mano);
+
+                //revisa si tiene la opcion de cortar
+                Boolean corta = juego.revisarSiCorta(jugadorActual);
+                if (corta) {
+                    //pregunta si desea cortar
+                    int opcionCortar = vista.mostrarMenuCortar();
+                    if (opcionCortar == 0) {
+                        mesa.vaciarMesa(mazo);
+                        ronda = true;
+                    }
+                }
 
                 //cambio de turnos
                 Jugador jugadorSiguiente = juego.revisarNoTurno(jugadores);
                 jugadorActual.setEsTurno(false);
                 jugadorSiguiente.setEsTurno(true);
-                
-                
-                //terminar ronda
-                int seguir = vista.mostrarMensajeOpcionesSeguir();
-                if (seguir == 0) {
-                    ronda = true;
-                }
+
         }
     }
 }

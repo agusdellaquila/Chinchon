@@ -62,4 +62,14 @@ public class Mazo {
             cartas.remove(0);
         }
     }
+
+    public void agregarCarta(Carta carta) {
+        cartas.add(carta);
+    }
+
+    public void descombinarTodasLasCartas() {
+        for (Carta carta : cartas) {
+            carta.descombinarCarta();
+        }
+    }
 }

@@ -3,14 +3,14 @@ public class Jugador {
     private boolean esTurno;
     private Mano mano;
     private int puntos;
-    private boolean esGanador;
+    private boolean esPerdedor;
 
-    public Jugador(String nombre, boolean esTurno) { //cuidado con el parametro esTurno, ya que podrian ser ambos true o ambos flase
+    public Jugador(String nombre, boolean esTurno) {
         this.nombre = nombre;
         this.esTurno = esTurno;
-        this.mano = new Mano(); //no se generen nuevas cartas
+        this.mano = new Mano();
         this.puntos = 0;
-        this.esGanador = false;
+        this.esPerdedor = false;
     }
 
     public String getNombre() {
@@ -45,12 +45,12 @@ public class Jugador {
         this.puntos = puntos;
     }
 
-    public boolean getEsGanador() {
-        return esGanador;
+    public boolean getEsPerdedor() {
+        return esPerdedor;
     }
 
-    public void setEsGanador(boolean esGanador) {
-        this.esGanador = esGanador;
+    public void setEsPerdedor(boolean esPerdedor) {
+        this.esPerdedor = esPerdedor;
     }
 
      //agarrar carta del mazo

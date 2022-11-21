@@ -88,14 +88,20 @@ public class Vista {
         System.out.println(jugadorActual.getNombre() + ",Tu mano quedo asi: ");
     }
 
+    public int mostrarMenuBucleDeCombinaciones() {
+        System.out.println("1. Hacer combinaciones");
+        System.out.println("2. No deseo combinar");
+        return sc.nextInt();
+    }
+
     public int mostrarMenuCombinaciones(Jugador jugadorActual) {
         sc = new Scanner(System.in);
         System.out.println(jugadorActual.getNombre() + ", Desea agregar combinaciones? ");
-        System.out.println("1. Escalera de 3");
-        System.out.println("2. Numeros iguales de 3");
+        System.out.println("1. Escalera");
+        System.out.println("2. Numeros iguales");
         System.out.println("3. Agregar extra a combinacion de escalera existente");
         System.out.println("4. Agregar extra a combinacion de numeros iguales existente");
-        System.out.println("5. No deseo combinar");
+        System.out.println("Cualquier otro numero: Terminar combinaciones");
         System.out.println("----------------------------------");
         return sc.nextInt();
     }
@@ -131,6 +137,12 @@ public class Vista {
         //validar q exista
         return cartaPorJugar;
     }
+
+    public int inputNumeroDeCartas() {
+        sc = new Scanner(System.in);
+        System.out.println("Ingrese el numero de la cantidad de cartas que desea combinar: ");
+        return sc.nextInt();
+    }
     
     public void opcionInvalida() {
         System.out.println("Opcion invalida");
@@ -144,9 +156,10 @@ public class Vista {
         System.out.println("----------DEJE UNA CARTA EN LA MESA----------");
     }
 
-    public int mostrarMensajeOpcionesSeguir() {
+    public int mostrarMenuCortar() {
         sc = new Scanner(System.in);
-        System.out.println("Pulse 1 para seguir, 0 para salir"); 
+        System.out.println("----Tiene la opcion cortar----");
+        System.out.println("Pulse 0 para cortar, o cualquier otro numero para pasar de turno");
         return sc.nextInt();
     }
 
@@ -159,12 +172,26 @@ public class Vista {
         for (int i = 1; i <= cantidadJugadores; i++) {
             System.out.println("Ingrese el nombre del jugador " + (i));
             String nombre = sc.next();
-            
             nombresDeJugadores.add(nombre);
         }
 
         return nombresDeJugadores;
     }
 
-    
+    public void mostrarPuntajes(ArrayList<Jugador> jugadores) {
+        System.out.println("El jugador que llegue a 100 puntos, pierde");
+        System.out.println("Puntajes:");
+        for (Jugador jugador : jugadores) {
+            System.out.println(jugador.getNombre() + ": " + jugador.getPuntos() + " puntos");
+        }
+    }
+
+    public void mostrarGanador(Jugador jugador) {
+        System.out.println("\u001B[32m" + "!!!felicitaciones!!!" + "\u001B[0m");
+        System.out.println("El ganador es: " + "\u001B[32m" + jugador.getNombre() + "\u001B[0m");
+    }
+
+    public void mostrarMensajeNuevaRonda() {
+        System.out.println("---------------Nueva ronda---------------");
+    }
 }
