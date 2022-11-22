@@ -1,3 +1,5 @@
+package ar.edu.unlu.poo.chinchon.model;
+
 import java.util.ArrayList;
 
 public class Mesa {
@@ -7,36 +9,38 @@ public class Mesa {
         this.mesa = new ArrayList<>();
     }
 
+    //getters
     public ArrayList<Carta> getMesa() {
         return mesa;
     }
     
-    public void agregarCartaALaMesa(Carta carta) {
-        mesa.add(carta);
-    }
-
     public Carta getUltimaCartaMesa() {
         Carta ultimaCarta = mesa.get(mesa.size() - 1);
         return ultimaCarta;
     }
+    
+    //setters
+    public void agregarCartaALaMesa(Carta carta) {
+        mesa.add(carta);
+    }
 
-    //poner una carta random en la mesa
+    //metodos
     public void cartaInicialMesa(Mazo mazo) {
         int indice = (int) (Math.random() * mazo.getMazoLength());
         mesa.add(mazo.getMazo().get(indice));
         mazo.getMazo().remove(indice);
     }
 
-    //quitar la ultima carta de la mesa
     public void quitarCartaDeLaMesa() {
         mesa.remove(mesa.size() - 1);
     }
 
-    //vaciar mesa
     public void vaciarMesa(Mazo mazo) {
         for (Carta carta : mesa) {
             mazo.agregarCarta(carta);
         }
         mesa.clear();
     }
+
+
 }

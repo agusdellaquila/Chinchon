@@ -1,5 +1,7 @@
+package ar.edu.unlu.poo.chinchon.model;
+
 public class Carta {
-    enum Palo {ORO, COPA, ESPADA, BASTO}
+    public enum Palo {ORO, COPA, ESPADA, BASTO}
     enum Combinacion {CHINCHON, ESCALERA, NUMEROS_IGUALES, NO_COMBINADA}
     private Palo palo;
     private int numero;
@@ -11,7 +13,8 @@ public class Carta {
         this.numero = numero;
         this.combinacion = Combinacion.NO_COMBINADA;
     }
-
+    
+    //getters
     public Palo getPalo() {
         return palo;
     }
@@ -24,7 +27,16 @@ public class Carta {
         return combinacion;
     }
 
-    //combinacion to string
+    //setters
+    public void setCombinacion(Combinacion combinacion) {
+        this.combinacion = combinacion;
+    }
+
+    public void descombinarCarta() {
+        this.combinacion = Combinacion.NO_COMBINADA;
+    }
+
+    //metodos
     public String combinacionToString(Combinacion combinacion) {
         switch (combinacion) {
             case ESCALERA:
@@ -37,28 +49,4 @@ public class Carta {
                 return "Error en el tipo de combinacion";
         }
     }
-
-    public void descombinarCarta() {
-        this.combinacion = Combinacion.NO_COMBINADA;
-    }
-
-    public void setCombinacion(Combinacion combinacion) {
-        this.combinacion = combinacion;
-    }
-    
-    //return Palo from string
-    // public static Palo getPaloFromString(String palo) {
-    //     switch (palo) {
-    //         case "ORO":
-    //             return Palo.ORO;
-    //         case "COPA":
-    //             return Palo.COPA;
-    //         case "ESPADA":
-    //             return Palo.ESPADA;
-    //         case "BASTO":
-    //             return Palo.BASTO;
-    //         default:
-    //             return null;
-    //     }
-    // }
 }

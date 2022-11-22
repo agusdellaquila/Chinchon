@@ -1,20 +1,22 @@
+package ar.edu.unlu.poo.chinchon.views;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Vista {
+import ar.edu.unlu.poo.chinchon.model.Jugador;
+import ar.edu.unlu.poo.chinchon.model.Mano;
+import ar.edu.unlu.poo.chinchon.model.Mesa;
+import ar.edu.unlu.poo.chinchon.model.Carta;
+
+
+public class VistaConsola implements IVista{
     static Scanner sc;
-    
-    //REVISAR QUE NO HAYA NADA DE LOGICA ACA
 
-    public Vista() {
-
-    }
-
-    public int mostrarMenuJuegoOSalgo() {
+    public String mostrarMenuJuegoOSalgo() {
         sc = new Scanner(System.in);
         System.out.println("1. Jugar");
         System.out.println("2. Salir");
-        int opcion = sc.nextInt();
+        String opcion = sc.next();
         return opcion;
     }
 
@@ -33,26 +35,26 @@ public class Vista {
     }
 
     public void mostrarCarta(Carta carta) {
-        System.out.println("[" + carta.getNumero() + " " + carta.getPalo() + " " + carta.combinacionToString(carta.getCombinacion()) + "\u001B[0m" + "]");
-        System.out.print("\u001B[0m");
-        // System.out.println("┌───────┐");
-        // System.out.println("│       │");
-        // if (numero > 9) {
-        //     System.out.println("│ " + numero + "    │");
-        // } else {
-        //     System.out.println("│ " + numero + "     │");
-        // }
-        // if (palo == Carta.Palo.ORO) {
-        //     System.out.println("│ ORO   │");
-        // } else if (palo == Carta.Palo.COPA) {
-        //     System.out.println("│ COPA  │");
-        // } else if (palo == Carta.Palo.ESPADA) {
-        //     System.out.println("│ESPADA │");
-        // } else if (palo == Carta.Palo.BASTO) {
-        //     System.out.println("│ BASTO │");
-        // }
-        // System.out.println("│       │");
-        // System.out.println("└───────┘");
+        // System.out.println("[" + carta.getNumero() + " " + carta.getPalo() + " " + carta.combinacionToString(carta.getCombinacion()) + "\u001B[0m" + "]");
+        // System.out.print("\u001B[0m");
+        System.out.println("┌───────┐");
+        System.out.println("│       │");
+        if (carta.getNumero() > 9) {
+            System.out.println("│ " + carta.getNumero() + "    │");
+        } else {
+            System.out.println("│ " + carta.getNumero() + "     │");
+        }
+        if (carta.getPalo() == Carta.Palo.ORO) {
+            System.out.println("│ ORO   │");
+        } else if (carta.getPalo() == Carta.Palo.COPA) {
+            System.out.println("│ COPA  │");
+        } else if (carta.getPalo() == Carta.Palo.ESPADA) {
+            System.out.println("│ESPADA │");
+        } else if (carta.getPalo() == Carta.Palo.BASTO) {
+            System.out.println("│ BASTO │");
+        }
+        System.out.println("│       │");
+        System.out.println("└───────┘");
     }
 
     public String mostrarCartaString(Carta carta) {
@@ -77,33 +79,31 @@ public class Vista {
         System.out.println("\u001B[33m" + "-------------------------------------------" + "\u001B[0m");
     }
 
-    public int mostrarOpcionesDeLevantado() {
+    public String mostrarOpcionesDeLevantado() {
         System.out.println("De donde desea levantar una carta?");
         System.out.println("1. Agarrar carta del mazo");
         System.out.println("2. Agarrar carta de la mesa");
-        return sc.nextInt();        
+        return sc.next();        
     }
 
     public void mostrarMensajeManoActualizada(Jugador jugadorActual) {
         System.out.println(jugadorActual.getNombre() + ",Tu mano quedo asi: ");
     }
 
-    public int mostrarMenuBucleDeCombinaciones() {
+    public String mostrarMenuBucleDeCombinaciones() {
         System.out.println("1. Hacer combinaciones");
         System.out.println("2. No deseo combinar");
-        return sc.nextInt();
+        return sc.next();
     }
 
-    public int mostrarMenuCombinaciones(Jugador jugadorActual) {
+    public String mostrarMenuCombinaciones(Jugador jugadorActual) {
         sc = new Scanner(System.in);
         System.out.println(jugadorActual.getNombre() + ", Desea agregar combinaciones? ");
         System.out.println("1. Escalera");
         System.out.println("2. Numeros iguales");
-        System.out.println("3. Agregar extra a combinacion de escalera existente");
-        System.out.println("4. Agregar extra a combinacion de numeros iguales existente");
-        System.out.println("Cualquier otro numero: Terminar combinaciones");
+        System.out.println("Cualquier otra tecla: Terminar combinaciones");
         System.out.println("----------------------------------");
-        return sc.nextInt();
+        return sc.next();
     }
 
     public void mostrarMensajeCombinacionEscalera() {
@@ -116,6 +116,10 @@ public class Vista {
         System.out.println("----------Ingrese las cartas a combinar----------");
     }
 
+    public void mostrarMensajeNoCombinaciones() {
+        System.out.println("No se formaron combinaciones");
+    }
+
     public void mostrarMensajeNoEsEscalera() {
         System.out.println("No es escalera");
     }
@@ -124,24 +128,23 @@ public class Vista {
         System.out.println("No es numeros iguales");
     }
 
-    public Carta inputCarta(Jugador jugadorActual) {
+    public String inputCarta(Jugador jugadorActual) {
         sc = new Scanner(System.in);
-        System.out.println("Ingrese el numero y el palo (dejando una coma entremedio: N,P) de la carta deseada: ");
+        System.out.println("Ingrese el NUMERO y la INICIAL del palo todo junto sin espacios (NP): de la carta deseada: ");
         String carta = sc.next();
-        //parse carta
         carta.trim();
-        String[] cartaParse = carta.split(",");
-        int numero = Integer.parseInt(cartaParse[0]);
-        Carta.Palo palo = Carta.Palo.valueOf(cartaParse[1].toUpperCase());
-        Carta cartaPorJugar = jugadorActual.getMano().buscarCartaEnMano(numero, palo);
-        //validar q exista
-        return cartaPorJugar;
+        return carta;
     }
 
     public int inputNumeroDeCartas() {
         sc = new Scanner(System.in);
-        System.out.println("Ingrese el numero de la cantidad de cartas que desea combinar: ");
-        return sc.nextInt();
+        System.out.println("Ingrese el numero de la CANTIDAD DE CARTAS que desea combinar: ");
+        while (!sc.hasNextInt()) {
+            System.out.println("Ingrese un numero valido");
+            sc.next();
+        }
+        int opcionElegida = sc.nextInt();
+        return opcionElegida;
     }
     
     public void opcionInvalida() {
@@ -156,11 +159,11 @@ public class Vista {
         System.out.println("----------DEJE UNA CARTA EN LA MESA----------");
     }
 
-    public int mostrarMenuCortar() {
+    public String mostrarMenuCortar() {
         sc = new Scanner(System.in);
         System.out.println("----Tiene la opcion cortar----");
-        System.out.println("Pulse 0 para cortar, o cualquier otro numero para pasar de turno");
-        return sc.nextInt();
+        System.out.println("Ingrese 0 para cortar, o cualquier otro numero para pasar de turno");
+        return sc.next();
     }
 
     public ArrayList<String> mostrarMensajeCantidadJugadores(int cantidadJugadores) {
@@ -187,8 +190,13 @@ public class Vista {
     }
 
     public void mostrarGanador(Jugador jugador) {
-        System.out.println("\u001B[32m" + "!!!felicitaciones!!!" + "\u001B[0m");
+        System.out.println("--------------------------------------");
+        System.out.println("\u001B[32m" + "!!!FELICITACIONES!!!" + "\u001B[0m");
         System.out.println("El ganador es: " + "\u001B[32m" + jugador.getNombre() + "\u001B[0m");
+    }
+
+    public void mostrarMensajeNoHayCartasEnElMazo() {
+        System.out.println("No hay mas cartas en el mazo");
     }
 
     public void mostrarMensajeNuevaRonda() {

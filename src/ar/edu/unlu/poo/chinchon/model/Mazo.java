@@ -1,3 +1,5 @@
+package ar.edu.unlu.poo.chinchon.model;
+
 import java.util.ArrayList;
 
 public class Mazo {
@@ -7,20 +9,27 @@ public class Mazo {
         this.cartas = new ArrayList<>();
     }
 
-    public void generarMazo() {
-        for (Carta.Palo palo : Carta.Palo.values()) {
-            for (int i = 1; i <= 12; i++) {
-                cartas.add(new Carta(i, palo));
-            }
-        }
-    }
-
+    //getters
     public ArrayList<Carta> getMazo() {
         return cartas;
     }
 
     public int getMazoLength() {
         return cartas.size();
+    }
+    
+    //setters
+    public void agregarCarta(Carta carta) {
+        cartas.add(carta);
+    }
+
+    //metodos
+    public void generarMazo() {
+        for (Carta.Palo palo : Carta.Palo.values()) {
+            for (int i = 1; i <= 12; i++) {
+                cartas.add(new Carta(i, palo));
+            }
+        }
     }
 
     public Carta getRandomCarta() {
@@ -61,10 +70,6 @@ public class Mazo {
             jugador.getMano().agregarCarta(cartas.get(0));
             cartas.remove(0);
         }
-    }
-
-    public void agregarCarta(Carta carta) {
-        cartas.add(carta);
     }
 
     public void descombinarTodasLasCartas() {
