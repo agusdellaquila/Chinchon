@@ -2,7 +2,7 @@ package ar.edu.unlu.poo.chinchon.model;
 
 public class Carta {
     public enum Palo {ORO, COPA, ESPADA, BASTO}
-    enum Combinacion {CHINCHON, ESCALERA, NUMEROS_IGUALES, NO_COMBINADA}
+    enum Combinacion {ESCALERA, NUMEROS_IGUALES, NO_COMBINADA}
     private Palo palo;
     private int numero;
     private Combinacion combinacion;

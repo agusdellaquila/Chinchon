@@ -62,10 +62,6 @@ public class Mano {
         this.combinacionesNumerosIguales.add(combinacion);
     }
 
-    public void descombinarCarta(Carta carta) {
-        carta.setCombinacion(Carta.Combinacion.NO_COMBINADA);
-    }
-
     //metodos
     public void jugarCarta(Carta cartaPorJugar) {
         if (cartaPorJugar.getCombinacion() == Carta.Combinacion.ESCALERA) {
@@ -94,7 +90,7 @@ public class Mano {
         for (ArrayList<Carta> combinacion : combinacionesEscalera) {
             if (combinacion.size() < 3) {
                 for (Carta carta : combinacion) {
-                    this.descombinarCarta(carta);
+                    carta.descombinarCarta();;
                 }
             }
         }
@@ -102,14 +98,12 @@ public class Mano {
         for (ArrayList<Carta> combinacion : combinacionesNumerosIguales) {
             if (combinacion.size() < 3) {
                 for (Carta carta : combinacion) {
-                    this.descombinarCarta(carta);
+                    carta.descombinarCarta();;
                 }
             }
         }
     }
 
-    //buscar carta en mano y retornarla
-    //VALIDAR
     public Carta buscarCartaEnMano(int numero, Carta.Palo palo) {
         for (Carta carta : mano) {
             if (carta.getNumero() == numero && carta.getPalo() == palo) {
@@ -183,27 +177,27 @@ public class Mano {
 
     public void setearPuntaje(Jugador jugador) {
         int lengthCombinaciones = this.getCombinacionesEscalera().size() + this.getCombinacionesNumerosIguales().size();
-        Boolean c3 = false;
-        Boolean c4 = false;
+        Boolean combinacionesDeATres = false;
+        Boolean combinacionesDeACuatro = false;
         if (lengthCombinaciones == 2) {
             for (ArrayList<Carta> combinacion : this.getCombinacionesEscalera()) {
                 if (combinacion.size() == 3) {
-                    c3 = true;
+                    combinacionesDeATres = true;
                 }
                 if (combinacion.size() == 4) {
-                    c4 = true;
+                    combinacionesDeACuatro = true;
                 }
             }
             for (ArrayList<Carta> combinacion : this.getCombinacionesNumerosIguales()) {
                 if (combinacion.size() == 3) {
-                    c3 = true;
+                    combinacionesDeATres = true;
                 }
                 if (combinacion.size() == 4) {
-                    c4 = true;
+                    combinacionesDeACuatro = true;
                 }
             }
         }
-        if (c3 && c4) {
+        if (combinacionesDeATres && combinacionesDeACuatro) {
             jugador.setPuntos(jugador.getPuntos() - 10);
         } else if (this.esChinchon(this)) {
             jugador.setEstado(Jugador.Estado.GANADOR);

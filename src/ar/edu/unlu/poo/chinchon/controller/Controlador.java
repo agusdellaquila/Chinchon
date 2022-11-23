@@ -88,6 +88,7 @@ public class Controlador {
         juego.iniciarMesa();
         //reparte las manos de los jugadores
         juego.mezclarYRepartirMazo();
+        vista.mostrarMensajeInfoPerder();
         vista.mostrarPuntajes(jugadores);
         
         Boolean ronda = false;  
@@ -105,7 +106,7 @@ public class Controlador {
                 mano.ordenarPorPaloYNumero(mano);
                 
                 //mostrar su mano inicial
-                vista.mostrarMano(jugadorActual, mano);
+                vista.mostrarMano(jugadorActual, mano, "Mano de");
 
                 //opciones de levantado
                 String opcionLevantado = "0";
@@ -130,8 +131,7 @@ public class Controlador {
                 }
 
                 //mostrar su mano con carta levantada
-                vista.mostrarMensajeManoActualizada(jugadorActual);
-                vista.mostrarMano(jugadorActual, mano);
+                vista.mostrarMano(jugadorActual, mano, "Mano actualizada de");
 
                 //revisar si tiene combinaciones
                 String bucleCombinaciones = "0";
@@ -143,14 +143,11 @@ public class Controlador {
                         String combinaciones = vista.mostrarMenuCombinaciones(jugadorActual);
         
                         if (combinaciones.equals("1")) {
-                            vista.mostrarMensajeCombinacionEscalera();
-        
                             ArrayList<Carta> cartasPorCombinar = new ArrayList<Carta>();
-                            int cantidadDeCartasPorCombinar = vista.inputNumeroDeCartas();
                             
-                            while(!juego.validarMenuCantidadDeCartasPorCombinar(cantidadDeCartasPorCombinar)) {
-                                cantidadDeCartasPorCombinar = vista.inputNumeroDeCartas();
-                            }
+                            int cantidadDeCartasPorCombinar = validadInputCantidadDeCartas();
+
+                            vista.mostrarMensajeCombinacionEscalera();
 
                             for (int i = 0; i < cantidadDeCartasPorCombinar; i++) {
                                 Carta cartaValida = this.inputCarta(jugadorActual);
@@ -166,24 +163,21 @@ public class Controlador {
                             }
 
                         } else if (combinaciones.equals("2")) {
-                            vista.mostrarMensajeCombinacionNumerosIguales();
-        
                             ArrayList<Carta> cartasPorCombinar = new ArrayList<Carta>();
-                            int cantidadDeCartasPorCombinar = vista.inputNumeroDeCartas();
                             
-                            if (cantidadDeCartasPorCombinar >= 3 && cantidadDeCartasPorCombinar <= 4) {
-                                for (int i = 0; i < cantidadDeCartasPorCombinar; i++) {
-                                    Carta cartaValida = this.inputCarta(jugadorActual);
-                                    cartasPorCombinar.add(cartaValida);
-                                }
-                                
-                                Boolean numerosIguales = mano.combinacionNumerosIguales(cartasPorCombinar);
-            
-                                if (numerosIguales) {
-                                    mano.setCombinacionesEscalera(cartasPorCombinar);
-                                } else {
-                                    vista.mostrarMensajeNoEsNumerosIguales();
-                                }
+                            int cantidadDeCartasPorCombinar = validadInputCantidadDeCartas();
+
+                            vista.mostrarMensajeCombinacionNumerosIguales();
+
+                            for (int i = 0; i < cantidadDeCartasPorCombinar; i++) {
+                                Carta cartaValida = this.inputCarta(jugadorActual);
+                                cartasPorCombinar.add(cartaValida);
+                            }
+                            
+                            Boolean numerosIguales = mano.combinacionNumerosIguales(cartasPorCombinar);
+        
+                            if (numerosIguales) {
+                                mano.setCombinacionesNumerosIguales(cartasPorCombinar);
                             } else {
                                 vista.mostrarMensajeNoEsNumerosIguales();
                             }
@@ -202,7 +196,7 @@ public class Controlador {
                 mano.ordenarPorPaloYNumero(mano);
 
                 //mostrar su mano para que vea cual tirar
-                vista.mostrarMano(jugadorActual, mano);
+                vista.mostrarMano(jugadorActual, mano, "Mano actual de");
 
                 //dejar su carta extra para quedarse con 7
                 vista.mostrarMensajeDejeUnaCarta();
@@ -219,7 +213,7 @@ public class Controlador {
                 mano.ordenarPorPaloYNumero(mano);
                 
                 //mostrar como queda su mano al final del turno
-                vista.mostrarMano(jugadorActual, mano);
+                vista.mostrarMano(jugadorActual, mano, "Mano de final de ronda de");
 
                 //revisa si tiene la opcion de cortar
                 Boolean corta = juego.revisarSiCorta(jugadorActual);
@@ -251,5 +245,15 @@ public class Controlador {
         }
 
         return cartaValida;
+    }
+
+    public int validadInputCantidadDeCartas() {
+        int cantidadDeCartasPorCombinar = vista.inputNumeroDeCartas();
+                            
+        while(!juego.validarMenuCantidadDeCartasPorCombinar(cantidadDeCartasPorCombinar)) {
+            cantidadDeCartasPorCombinar = vista.inputNumeroDeCartas();
+        }
+
+        return cantidadDeCartasPorCombinar;
     }
 }

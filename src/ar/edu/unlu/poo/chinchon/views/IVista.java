@@ -14,9 +14,8 @@ public interface IVista {
     public void mostrarCarta(Carta carta);
     public String mostrarCartaString(Carta carta);
     public void mostrarTurnoDe(Jugador jugador);
-    public void mostrarMano(Jugador jugadorActual, Mano mano);
+    public void mostrarMano(Jugador jugadorActual, Mano mano, String titulo);
     public String mostrarOpcionesDeLevantado();
-    public void mostrarMensajeManoActualizada(Jugador jugadorActual) ;
     public String mostrarMenuBucleDeCombinaciones();
     public String mostrarMenuCombinaciones(Jugador jugadorActual);
     public void mostrarMensajeNoCombinaciones();
@@ -27,11 +26,11 @@ public interface IVista {
     public String inputCarta(Jugador jugadorActual);
     public int inputNumeroDeCartas();
     public void opcionInvalida();
-    public void mostrarMensajeIngreseCarta();
     public void mostrarMensajeDejeUnaCarta();
     public String mostrarMenuCortar();
     public void mostrarMensajeNoHayCartasEnElMazo();
     public ArrayList<String> mostrarMensajeCantidadJugadores(int cantidadJugadores);
+    public void mostrarMensajeInfoPerder();
     public void mostrarPuntajes(ArrayList<Jugador> jugadores);
     public void mostrarGanador(Jugador jugador);
     public void mostrarMensajeNuevaRonda();

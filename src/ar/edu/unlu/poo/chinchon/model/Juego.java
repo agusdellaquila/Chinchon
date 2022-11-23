@@ -148,13 +148,13 @@ public class Juego {
     }
 
     public Boolean validarMenuBucleDeCombinaciones(String opcion) {
-        if (opcion == "2") 
+        if (opcion.equals("2")) 
             return true;
         return false;
     }
 
     public Boolean validarMenuOpcionCortar(String opcion) {
-        if (opcion == "0") { 
+        if (opcion.equals("0")) { 
             return true;
         }
         return false;
